@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Comment-Box</title>
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+
+</head>
+<body>
+    <h1>Comment Box</h1>
+    <div>
+        <textarea name="" id="comment" cols="60" rows="10"></textarea>
+        <label for="comment"></label><br/>
+        <button id="target">Add</button>
+    </div>
+    <script>
+        let data = {};
+        let commentId = 1;
+        let commentValue ="";
+        let comments = [];
+
+        $("#target").click(function () {
+            createArr();
+
+            $("#target").each(function () {
+                let clonedobj = jQuery.extend({}, data);
+                comments.push(clonedobj);
+                return comments;
+            });
+
+            displayComments(comments);
+            removeComment(comments);
+            resetTextarea();
+        });
+
+        function createArr() {
+            commentValue = $("#comment").val();
+            data.commentId = commentId;
+            data.comment = commentValue;
+            data.email = "1and1@yahoo.com";
+            data.image = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD9_wTAzDmdhtXHS-eFRuRJtZ5qzjqyQPMco0F_I0915otqW_V";
+            commentId++;
+        };
+
+        const div = document.createElement("div");
+        document.body.appendChild(div);
+        const ul = document.createElement("ul");
+        div.appendChild(ul);
+
+        function displayComments(comments) {
+            $("ul").empty();
+
+            for (index in comments) {
+                const targetedComment = comments[index];
+                const li = document.createElement("li");
+                const btn = document.createElement("button");
+                li.innerHTML = targetedComment.comment;
+                li.setAttribute("id", "ID-" + (targetedComment.commentId));
+                $("ul").append(li);
+                btn.setAttribute("data-value", "com" + (targetedComment.commentId));
+                $("li#ID-" + targetedComment.commentId).append(btn);
+                $("li#ID-" + targetedComment.commentId).find("button").text('X');
+            }
+        };
+
+        function resetTextarea() {
+            if (commentValue !== "") {
+                $("#comment").val("");
+            }
+        };
+
+        function removeComment(comments) {
+            $("[data-value]").click(function() {
+                for (let index of comments) {
+                    let dataValue = $(this).attr("data-value").replace("com", "");
+
+                    if (index.commentId == dataValue) {
+                        comments.pop(index);
+                    }
+
+                    displayComments(comments);
+                };
+            });
+        }
+    </script>
+</body>
+</html>
